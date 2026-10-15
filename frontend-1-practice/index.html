@@ -5,22 +5,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Выбор даты и времени</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
-    <!--
-      ЗАДАНИЕ
-      ========
-      Сверстать страницу выбора даты и времени по своему макету.
-
-      Пока это только вёрстка. Никакого JavaScript — ни кликов,
-      ни переходов, ни выбора дня. Всё статично.
-
-      Стили пишите в styles.css. Разметку — здесь.
-    -->
-
     <div class="page">
-      <!-- Начните отсюда. Разметьте шапку, основную область
-           с календарём и слотами, подвал. -->
+      <header>
+        <a href="#"><img src="images/logo-black.png" alt="logo"></a>
+        <nav>
+          <a href="">Услуги</a>
+          <a href="">Команда</a>
+          <a href="">Отзывы</a>
+          <a href="">Контакты</a>
+        </nav>
+      </header>
+      <section>
+        <div class="step-indicator">
+          <div class="circle empty"><span>1</span></div>
+          <span class="step-text">Выбор мастера</span>
+        </div>
+        <div class="step-indicator">
+          <div class="circle empty"><span>2</span></div>
+          <span class="step-text">Выбор услуги</span>
+        </div>
+        <div class="step-indicator">
+          <div class="circle"><span>3</span></div>
+          <span class="step-text not-empty">Выбор даты</span>
+        </div>
+        <div class="step-indicator">
+          <div class="circle empty"><span>4</span></div>
+          <span class="step-text">Контактные данные</span>
+        </div>
+        <div class="step-indicator">
+          <div class="circle empty"><span>5</span></div>
+          <span class="step-text">Подтверждение</span>
+        </div>
+      </section>
+      <main>
+        <h1>Выберите дату и время</h1>
+        <div class="calendar">
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <span class="month-year">Октябрь 2026</span>
+              <div class="calendar-nav">
+                <button><</button>
+                <button>></button>
+              </div>
+            </div>
+            <div class="months-grid">
+              <div class="months">
+              <span>Пн</span>
+              <span>Вт</span>
+              <span>Ср</span>
+              <span>Чт</span>
+              <span>Пт</span>
+              <span>Сб</span>
+              <span>Вс</span>
+            </div>
+            <div class="grid-days">
+              <div class="grid-row">
+                <div class="day-cell other-month">28</div>
+                <div class="day-cell other-month">29</div>
+                <div class="day-cell other-month">30</div>
+                <div class="day-cell">1</div>
+                <div class="day-cell">2</div>
+                <div class="day-cell">3</div>
+                <div class="day-cell">4</div>
+              </div>
+              <div class="grid-row">
+                <div class="day-cell">5</div>
+                <div class="day-cell">6</div>
+                <div class="day-cell">7</div>
+                <div class="day-cell">8</div>
+                <div class="day-cell">9</div>
+                <div class="day-cell">10</div>
+                <div class="day-cell">11</div>
+              </div>
+              <div class="grid-row">
+                <div class="day-cell">12</div>
+                <div class="day-cell">13</div>
+                <div class="day-cell selected">14</div>
+                <div class="day-cell">15</div>
+                <div class="day-cell">16</div>
+                <div class="day-cell">17</div>
+                <div class="day-cell">18</div>
+              </div>
+              <div class="grid-row">
+                <div class="day-cell">19</div>
+                <div class="day-cell">20</div>
+                <div class="day-cell">21</div>
+                <div class="day-cell">22</div>
+                <div class="day-cell">23</div>
+                <div class="day-cell">24</div>
+                <div class="day-cell">25</div>
+              </div>
+              <div class="grid-row">
+                <div class="day-cell">26</div>
+                <div class="day-cell">27</div>
+                <div class="day-cell">28</div>
+                <div class="day-cell">29</div>
+                <div class="day-cell">30</div>
+                <div class="day-cell">31</div>
+                <div class="day-cell other-month">1</div>
+              </div>
+            </div>
+            </div>
+          </div>
+          <div class="time-card">
+            <span class="header-time">Доступное время</span>
+            <div class="time-slots">
+              <button class="time-slot">10:00</button>
+              <button class="time-slot unavailable">11:00 <span>Занято</span></button>
+              <button class="time-slot">12:00</button>
+              <button class="time-slot unavailable">13:00 <span>Занято</span></button>
+              <button class="time-slot selected">14:00</button>
+              <button class="time-slot">15:00</button>
+              <button class="time-slot">16:00</button>
+              <button class="time-slot">17:00</button>
+            </div>
+          </div>
+        </div>
+        <div class="calendar-buttons">
+          <button>НАЗАД</button>
+          <button>ВЫБРАТЬ</button>
+        </div>
+      </main>
+      <footer>
+      <div class="footer-data">
+        <img src="images/logo-white.png" alt="logo">
+
+        <div class="contact">
+          <span class="header-contact">КОНТАКТЫ</span>
+          <div class="address">
+            <img src="images/map-icon.png" alt="map-icon">
+            <span class="address-text">ул. Садовая, 15, Москва</span>
+          </div>
+          <div class="phone-section">
+            <img src="images/phone-icon.png" alt="phone-icon">
+            <span class="phone-text">+7 (495) 123-45-67</span>
+          </div>
+        </div>
+
+        <div class="operations-hours">
+          <span class="header-operations">РЕЖИМ РАБОТЫ</span>
+          <span class="hour-section">Пн–Пт: 9:00 – 21:00</span>
+          <span class="hour-section">Сб–Вс: 10:00 – 19:00</span>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026. Все права защищены.</span>
+        <span><a href="#">Политика конфиденциальности</a></span>
+      </div>
+    </footer>
     </div>
   </body>
 </html>
