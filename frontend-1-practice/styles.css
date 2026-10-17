@@ -205,17 +205,20 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
-  justify-self: center;
-  width: 56px;
+  justify-self: stretch;
+  width: 100%;
+  max-width: 56px;
   height: 26px;
   font-weight: bold;
   font-size: 13px;
   background: #EDEDED;
+  border: none;
   border-radius: 18px;
   color: #212121;
   cursor: pointer;
   transition: background 0.15s;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
 }
 
 .day-cell.other-month {
@@ -230,6 +233,13 @@ h1 {
 
 .day-cell:hover:not(.selected) {
   background: #00000027;
+}
+
+.months span,
+.grid-days .day-cell {
+  width: 100%;
+  max-width: 56px;
+  justify-self: center;
 }
 
 .time-card {
@@ -365,6 +375,7 @@ footer {
   gap: 40px;
   width: 100%;
   padding-bottom: 48px;
+  flex-wrap: wrap;
 }
 
 .footer-data > img {
@@ -377,12 +388,13 @@ footer {
 
 .contact {
   margin-top: 64px;
-  padding-left: 430px;
+  padding-left: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
-  flex: 1;
+  flex: 1 1 260px;
+  min-width: 0;
   text-align: left;
 }
 
@@ -432,12 +444,12 @@ footer {
 
 .operations-hours {
   margin-top: 64px;
-  margin-right: 200px;
+  margin-right: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  flex-shrink: 0;
+  flex: 1 1 200px;
   white-space: nowrap;
 }
 
@@ -472,4 +484,145 @@ footer {
 
 .calendar-nav button:hover {
   background: #e2e8e0;
+}
+
+.day-cell:focus-visible,
+.time-slot:focus-visible,
+.calendar-nav button:focus-visible,
+.calendar-buttons button:focus-visible,
+nav a:focus-visible {
+  outline: 2px solid #242424;
+  outline-offset: 2px;
+}
+
+.day-cell:focus:not(:focus-visible),
+.time-slot:focus:not(:focus-visible),
+.calendar-nav button:focus:not(:focus-visible),
+.calendar-buttons button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.time-slot.unavailable,
+.time-slot:disabled {
+  background-color: #F5F5F3;
+  color: #999999;
+  cursor: not-allowed;
+}
+
+.time-slot:disabled:hover {
+  background-color: #F5F5F3;
+}
+
+@media (max-width: 1024px) {
+  header img { margin-left: 24px; }
+  nav { margin-right: 24px; gap: 16px; }
+
+  section {
+    padding: 0 24px;
+    gap: 8px;
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 76px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .step-text { font-size: 14px; }
+
+  h1 { padding: 0 24px; }
+
+  .calendar {
+    padding: 24px 24px 0;
+    gap: 24px;
+  }
+
+  .calendar-buttons {
+    margin: 24px 24px 0;
+  }
+
+  footer { padding: 32px 24px; }
+  .footer-bottom { margin-bottom: 32px; }
+}
+
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 12px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  header img { width: 64px; height: 64px; margin-left: 16px; margin-top: 0; }
+  nav {
+    margin-right: 16px;
+    margin-left: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  h1 {
+    padding: 0 16px;
+    font-size: 22px;
+  }
+
+  .calendar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px 16px 0;
+    gap: 16px;
+  }
+
+  .calendar-card,
+  .time-card {
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+  }
+
+  .time-card {
+    flex: 1 1 auto;
+    padding: 20px;
+  }
+
+  .calendar-buttons {
+    flex-direction: column-reverse;
+    margin: 16px 16px 0;
+    padding-bottom: 32px;
+  }
+  .calendar-buttons button,
+  .calendar-buttons button:first-child,
+  .calendar-buttons button:last-child {
+    width: 100%;
+  }
+
+  footer { padding: 24px 16px; }
+  .footer-data {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    padding-bottom: 24px;
+  }
+  .footer-data > img { margin-top: 0; }
+  .contact,
+  .operations-hours { margin-top: 0; }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .time-slot {
+    flex: 1 1 100%; 
+  }
+  .months span { font-size: 12px; }
+  .day-cell { font-size: 12px; height: 24px; }
 }
