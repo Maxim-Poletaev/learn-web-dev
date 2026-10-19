@@ -1,59 +1,137 @@
-// App — корневой компонент приложения.
-//
-// ЗАДАНИЕ
-// --------
-// Перенесите свою страницу выбора даты и времени из нативного JS
-// на React. У вас уже есть:
-//   - готовая вёрстка (HTML);
-//   - готовые стили (CSS);
-//   - рабочий код на нативном JS (валидация дат, рендер календаря,
-//     обработчики кликов, выбор слота).
-//
-// Теперь нужно то же самое сделать в React.
-//
-// ЧТО НУЖНО СДЕЛАТЬ
-// ------------------
-// 1. Разбить страницу на компоненты. Как именно — решайте сами.
-//    Обычно выделяют: шапку, подвал, календарь, сетку слотов,
-//    нижнюю панель.
-//
-// 2. Перенести вёрстку из HTML в JSX. Стили оставить как есть,
-//    просто положить их в тот же проект (например, в src/styles/
-//    или рядом с компонентами).
-//
-// 3. Заменить нативное состояние (переменные + прямые манипуляции
-//    с DOM) на useState. Какие именно данные должны жить в состоянии —
-//    подумайте сами. Скорее всего: текущий месяц, выбранный день,
-//    выбранное время, массив слотов.
-//
-// 4. Рендер календаря и слотов делать через JSX и .map(),
-//    без innerHTML и querySelector.
-//
-// 5. Обработчики кликов — через onClick прямо в JSX,
-//    без addEventListener.
-//
-// 6. Функции для работы с датами, которые вы уже написали
-//    на нативном JS (построение сетки календаря, сравнение дат,
-//    проверка «не раньше сегодня»), можно переиспользовать.
-//    Они чистые — не зависят от React. Создайте файл
-//    src/utils/date.js и перенесите их туда.
-//
-//
-// ПОДСКАЗКА
-// ---------
-// Если что-то не работает или непонятно, как перевести нативный
-// код на React — вернитесь к лекции. Там разбирались все
-// основные приёмы: состояние, пропсы, рендер списков, колбэки.
-//
-// Ниже — пустой каркас. Здесь можно начать писать.
+// src/App.jsx
+import { useState } from 'react';
+import Header from './components/Header';
+import StepsIndicator from './components/StepsIndicator';
+import Calendar from './components/Calendar/Calendar';
+import TimeSlots from './components/TimeSlots';
+import CalendarButtons from './components/CalendarButtons';
+import BookingSummary from './components/BookingSummary';
+import Footer from './components/Footer';
+import { TODAY, getSlotsForDay } from './data/slots';
+import {
+  isDateSelectable,
+  getFirstSelectableDayOfMonth,
+} from './utils/date';
 
-function App() {
+export default function App() {
+  // --- Состояние ---
+  const [currentMonth, setCurrentMonth] = useState(TODAY.month);
+  const [currentYear, setCurrentYear] = useState(TODAY.year);
+  const [selectedDate, setSelectedDate] = useState({
+    day: TODAY.day,
+    month: TODAY.month,
+    year: TODAY.year,
+  });
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [slots, setSlots] = useState(getSlotsForDay(TODAY.day));
+
+  // --- Выбор дня ---
+  function handleSelectDay(day) {
+    setSelectedDate({ day, month: currentMonth, year: currentYear });
+    setSelectedTime(null);                  // сброс времени
+    setSlots(getSlotsForDay(day));          // слоты нового дня
+  }
+
+  // --- Выбор времени ---
+  function handleSelectTime(time) {
+    setSelectedTime(time);
+  }
+
+  // --- Переключение месяца ---
+  function handlePrevMonth() {
+    let m = currentMonth - 1;
+    let y = currentYear;
+    if (m < 0) { m = 11; y -= 1; }
+    goToMonth(y, m);
+  }
+
+  function handleNextMonth() {
+    let m = currentMonth + 1;
+    let y = currentYear;
+    if (m > 11) { m = 0; y += 1; }
+    goToMonth(y, m);
+  }
+
+  function goToMonth(year, month) {
+    setCurrentMonth(month);
+    setCurrentYear(year);
+    setSelectedDate(null);                  // сбрасываем выбор
+    setSelectedTime(null);
+    const firstDay = getFirstSelectableDayOfMonth(year, month, TODAY);
+    setSlots(firstDay !== null ? getSlotsForDay(firstDay) : []);
+  }
+
+  // --- Кнопки ---
+  function handleBack() {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = 'index.html';
+    }
+  }
+
+  function handleNext() {
+    if (!selectedDate) {
+      alert('Пожалуйста, выберите дату');
+      return;
+    }
+    if (!isDateSelectable(selectedDate.day, selectedDate.month, selectedDate.year, TODAY)) {
+      alert('Нельзя выбрать дату раньше сегодняшней');
+      return;
+    }
+    if (!selectedTime) {
+      alert('Пожалуйста, выберите время');
+      return;
+    }
+    const slot = slots.find((s) => s.time === selectedTime);
+    if (!slot || !slot.available) {
+      alert('Выбранное время недоступно. Пожалуйста, выберите другое');
+      setSelectedTime(null);
+      return;
+    }
+    const booking = { date: selectedDate, time: selectedTime };
+    localStorage.setItem('elair-booking', JSON.stringify(booking));
+    alert(
+      'Выбрано: ' +
+        booking.date.day + '.' +
+        (booking.date.month + 1) + '.' +
+        booking.date.year + ' ' + booking.time
+    );
+  }
+
   return (
-    <div>
-      {/* Начните отсюда. Например, разметьте .page, добавьте шапку,
-            основную область, подвал. */}
+    <div className="page">
+      <Header />
+      <StepsIndicator />
+
+      <main>
+        <h1>Выберите дату и время</h1>
+
+        <div className="calendar">
+          <Calendar
+            year={currentYear}
+            month={currentMonth}
+            selectedDate={selectedDate}
+            today={TODAY}
+            onSelectDay={handleSelectDay}
+            onPrevMonth={handlePrevMonth}
+            onNextMonth={handleNextMonth}
+          />
+          <TimeSlots
+            slots={slots}
+            selectedTime={selectedTime}
+            onSelectTime={handleSelectTime}
+          />
+        </div>
+        <BookingSummary
+          selectedDate={selectedDate}
+          selectedTime={selectedTime}
+        />
+        <CalendarButtons onBack={handleBack} onNext={handleNext} />
+        
+      </main>
+
+      <Footer />
     </div>
   );
 }
-
-export default App;
