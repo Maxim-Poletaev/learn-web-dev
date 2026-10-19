@@ -623,3 +623,24 @@ nav a:focus-visible {
 .day-cell.disabled:hover {
   background: #F5F5F3;
 }
+
+.booking-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 48px 32px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid #ede8e1;
+  border-radius: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  color: #222222;
+}
+.booking-summary__label { color: #696969; }
+.booking-summary__value { font-weight: 700; }
+
+@media (max-width: 768px) {
+  .booking-summary { margin: 0 16px 24px; font-size: 14px; }
+}
